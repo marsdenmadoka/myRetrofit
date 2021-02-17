@@ -1,10 +1,8 @@
 package com.madokasoftwares.retrofit
 
 import retrofit2.Response
-import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+
 
 //this interface we define all the functions we need to access our Api
 interface TodoApi {
@@ -13,6 +11,13 @@ suspend  fun getTodos():Response<List<Todo>> //oTodo is our data class here
 //we use the suspend keyword since we want to execute our function in a coroutines
 
 }
+
+
+
+
+
+
+
 
 
 

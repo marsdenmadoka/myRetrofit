@@ -38,6 +38,7 @@ class TodoAdapter : RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
+
         holder.binding.apply {
             val todo = todos[position]
             tvTitle.text = todo.title

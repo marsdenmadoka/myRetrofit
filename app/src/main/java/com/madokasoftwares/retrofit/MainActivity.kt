@@ -1,9 +1,15 @@
 package com.madokasoftwares.retrofit
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.nfc.Tag
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,16 +38,16 @@ class MainActivity : AppCompatActivity() {
 
         //make our APi request inside coroutine since we want to execute it in the background thread
         lifecycleScope.launchWhenCreated {
-            binding.progressBar.isVisible = true//make our progress bar visible since we want to make our API request
+            binding.progressBar.isVisible = true
+            val response = try{
+                RetrofitInstance.api.getTodos()
 
-            val response = try{ //get our response
-                RetrofitInstance.api.getTodos() //since we use retrofit with coroutine
             } catch (e:IOException) {
-             Log.e(TAG, "IOException,you might not have internet")
-                binding.progressBar.isVisible = false
-            return@launchWhenCreated
+                Log.e(TAG, "IOException,you might not have internet")
+               return@launchWhenCreated
             } catch (e:HttpException){
-                Log.e(TAG, "HttpException,unexpected response")
+                //Log.e(TAG, "HttpException,unexpected response")
+                Toast.makeText(applicationContext, "UNEXPECTED ERROR OCCURED", Toast.LENGTH_LONG).show()
                 binding.progressBar.isVisible = false
                return@launchWhenCreated
             }
@@ -53,6 +59,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             binding.progressBar.isVisible = false
+
         }
 
 
@@ -63,4 +70,13 @@ class MainActivity : AppCompatActivity() {
         adapter = todoAdapter
         layoutManager = LinearLayoutManager(this@MainActivity)
     }
+
+
+//    Handler().postDelayed({
+//        isNetworkAvailable()
+//    }, 1000)
+
 }
+
+
+
